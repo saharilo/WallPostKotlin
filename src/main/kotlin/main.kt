@@ -24,6 +24,14 @@ data class Likes(
 
 }
 
+object WallService {
+    private var posts = emptyArray<Post>()
+
+    fun add(post: Post): Post {
+        posts += post
+        return posts.last()
+    }
+}
 
 fun main() {
     val post = Post(1, 1, 1, 1, 1, "Привет!", 1, 1, false)
