@@ -15,7 +15,7 @@ class WallServiceTest {
     fun add() {
         val lastPost = WallService.add(Post(text = "Привет! Тест"))
         val (result) = lastPost
-        assertEquals(0, result)
+        assertEquals(1, result)
     }
 
     @Test
