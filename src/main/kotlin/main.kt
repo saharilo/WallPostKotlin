@@ -26,33 +26,46 @@ data class Likes(
 
 object WallService {
     private var posts = emptyArray<Post>()
-    private var nextId = 1
+    private var nextId = 0
 
     fun add(post: Post): Post {
-        posts += post.copy(id = nextId)
+        val postAdded = post.copy(id = nextId)
+        posts += postAdded
         nextId++
         return posts.last()
     }
 
     fun update(post: Post): Boolean {
-        val indexPost = posts.indexOf(post)
-        if (indexPost < 0) return false
-        posts[indexPost] = post
-        return true
+        val (indexPost) = post
+        for((index, postItem) in posts.withIndex()){
+            val (postId) = postItem
+            if (postId == indexPost) {
+                posts[indexPost] = post
+                return true
+            }
+        }
+        return false
     }
 
     fun clear() {
         posts = emptyArray()
-        nextId = 1
+        nextId = 0
+    }
+
+    fun getPostByIndex(index: Int): Post {
+        return posts[index]
     }
 }
 
 fun main() {
     val post = Post(text = "Привет!")
     val post2 = Post(text = "Привет2!")
+    val post3 = Post(1, text = "Привет3!")
 
-    WallService.add(post)
-    println(post)
-    WallService.update(post2)
-    println(post2)
+    val result1 = WallService.add(post)
+    val result2 = WallService.add(post2)
+    println(result1)
+    println(result2)
+    WallService.update(post3)
+    println(WallService.getPostByIndex(1))
 }
