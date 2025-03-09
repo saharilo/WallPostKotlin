@@ -11,6 +11,7 @@ data class Post(
     val replyPostId: Int = 0,
     val friendsOnly: Boolean = false,
     val original: Post? = null,
+    var attachments: Array <Attachment> = emptyArray(),
     var likes: Likes = Likes(0, false, false, false),
 )
 
