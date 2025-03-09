@@ -10,6 +10,7 @@ data class Post(
     val replyOwnerId: Int = 0,
     val replyPostId: Int = 0,
     val friendsOnly: Boolean = false,
+    val original: Post? = null,
     var likes: Likes = Likes(0, false, false, false),
 ) {
 
