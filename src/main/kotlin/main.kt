@@ -11,19 +11,131 @@ data class Post(
     val replyPostId: Int = 0,
     val friendsOnly: Boolean = false,
     val original: Post? = null,
+    var attachments: Array<Attachment> = emptyArray(),
     var likes: Likes = Likes(0, false, false, false),
-) {
-
-}
+)
 
 data class Likes(
     val count: Int,
     val userLikes: Boolean,
     val canLike: Boolean,
     val canPublish: Boolean,
-) {
+)
 
+data class Sizes(
+    val type: String,
+    val url: String,
+    val width: Int,
+    val height: Int,
+)
+
+data class Images(
+    val url: String,
+    val width: Int,
+    val height: Int,
+)
+
+interface Attachment {
+    val type: String
 }
+
+data class VideoAttachment(
+    override val type: String = "video",
+    val video: Video
+) : Attachment {
+}
+
+data class PhotoAttachment(
+    override val type: String = "photo",
+    val photo: Photo
+) : Attachment {
+}
+
+data class NoteAttachment(
+    override val type: String = "note",
+    val note: Note
+) : Attachment {
+}
+
+data class PageAttachment(
+    override val type: String = "page",
+    val page: Page
+) : Attachment {
+}
+
+data class StickerAttachment(
+    override val type: String = "sticker",
+    val sticker: Sticker
+) : Attachment {
+}
+
+data class Video(
+    val id: Int,
+    val ownerId: Int,
+    val title: String,
+    val artist: String,
+    val url: String,
+    val lyricsId: Int,
+    val albumId: Int,
+    val genreId: Int,
+    val date: Int,
+    val duration: Int,
+    val noSearch: Boolean,
+    val isHq: Boolean
+)
+
+data class Photo(
+    val id: Int,
+    val ownerId: Int,
+    val AlbumId: Int,
+    val userId: Int,
+    val text: String,
+    val date: Int,
+    val width: Int,
+    val height: Int,
+    val sizes: Array<Sizes>,
+)
+
+data class Note(
+    val id: Int,
+    val ownerId: Int,
+    val title: String,
+    val text: String,
+    val date: Int,
+    val comments: Int,
+    val readComments: Int,
+    val viewUrl: String
+)
+
+data class Page(
+    val id: Int,
+    val ownerId: Int,
+    val groupId: Int,
+    val creatorId: Int,
+    val title: String,
+    val currentUserCanEdit: Boolean,
+    val currentUserCanEditAccess: Boolean,
+    val whoCanView: Boolean,
+    val whoCanEdit: Boolean,
+    val edited: Int,
+    val created: Int,
+    val editorId: Int,
+    val views: Int,
+    val parent: String,
+    val parent2: String,
+    val source: String,
+    val html: String,
+    val viewUrl: String
+)
+
+data class Sticker(
+    val id: Int,
+    val ownerId: Int,
+    val productId: Int,
+    val stickerId: Int,
+    var images: Array<Images>,
+    var imagesWithBackground: Array<Images>,
+)
 
 object WallService {
     private var posts = emptyArray<Post>()
@@ -38,7 +150,7 @@ object WallService {
 
     fun update(post: Post): Boolean {
         val (indexPost) = post
-        for((index, postItem) in posts.withIndex()){
+        for ((index, postItem) in posts.withIndex()) {
             val (postId) = postItem
             if (postId == indexPost) {
                 posts[indexPost] = post
