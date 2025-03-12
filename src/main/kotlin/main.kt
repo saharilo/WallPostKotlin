@@ -11,7 +11,7 @@ data class Post(
     val replyPostId: Int = 0,
     val friendsOnly: Boolean = false,
     val original: Post? = null,
-    var attachments: Array <Attachment> = emptyArray(),
+    var attachments: Array<Attachment> = emptyArray(),
     var likes: Likes = Likes(0, false, false, false),
 )
 
@@ -37,14 +37,41 @@ data class Images(
 
 interface Attachment {
     val type: String
-    val id: Int
-    val ownerId: Int
 }
 
-class Video(
-    override val type: String,
-    override val id: Int,
-    override val ownerId: Int,
+data class VideoAttachment(
+    override val type: String = "video",
+    val video: Video
+) : Attachment {
+}
+
+data class PhotoAttachment(
+    override val type: String = "photo",
+    val photo: Photo
+) : Attachment {
+}
+
+data class NoteAttachment(
+    override val type: String = "note",
+    val note: Note
+) : Attachment {
+}
+
+data class PageAttachment(
+    override val type: String = "page",
+    val page: Page
+) : Attachment {
+}
+
+data class StickerAttachment(
+    override val type: String = "sticker",
+    val sticker: Sticker
+) : Attachment {
+}
+
+data class Video(
+    val id: Int,
+    val ownerId: Int,
     val title: String,
     val artist: String,
     val url: String,
@@ -55,40 +82,34 @@ class Video(
     val duration: Int,
     val noSearch: Boolean,
     val isHq: Boolean
-) : Attachment {
-}
+)
 
-class Photo(
-    override val type: String,
-    override val id: Int,
-    override val ownerId: Int,
+data class Photo(
+    val id: Int,
+    val ownerId: Int,
     val AlbumId: Int,
     val userId: Int,
     val text: String,
     val date: Int,
     val width: Int,
     val height: Int,
-    val sizes: Array <Sizes>,
-) : Attachment {
-}
+    val sizes: Array<Sizes>,
+)
 
-class Note(
-    override val type: String,
-    override val id: Int,
-    override val ownerId: Int,
+data class Note(
+    val id: Int,
+    val ownerId: Int,
     val title: String,
     val text: String,
     val date: Int,
     val comments: Int,
     val readComments: Int,
     val viewUrl: String
-) : Attachment {
-}
+)
 
-class Page(
-    override val type: String,
-    override val id: Int,
-    override val ownerId: Int,
+data class Page(
+    val id: Int,
+    val ownerId: Int,
     val groupId: Int,
     val creatorId: Int,
     val title: String,
@@ -105,20 +126,16 @@ class Page(
     val source: String,
     val html: String,
     val viewUrl: String
-) : Attachment {
-}
+)
 
-class Sticker(
-    override val type: String,
-    override val id: Int,
-    override val ownerId: Int,
+data class Sticker(
+    val id: Int,
+    val ownerId: Int,
     val productId: Int,
     val stickerId: Int,
-    var images: Array <Images>,
-    var imagesWithBackground: Array <Images>,
-): Attachment{
-
-}
+    var images: Array<Images>,
+    var imagesWithBackground: Array<Images>,
+)
 
 object WallService {
     private var posts = emptyArray<Post>()
